@@ -1,7 +1,6 @@
-from transformers import GPT2Tokenizer, GPT2LMHeadModel, Trainer, TrainingArguments, AutoTokenizer
-from datasets import load_dataset, Dataset
+from transformers import GPT2LMHeadModel, Trainer, TrainingArguments, AutoTokenizer
+from datasets import Dataset
 from scrapper import get_data
-import torch
 
 tokenizer = AutoTokenizer.from_pretrained("gpt2")
 model = GPT2LMHeadModel.from_pretrained("gpt2")
@@ -26,16 +25,13 @@ training_args = TrainingArguments(
     save_total_limit=2,
 )
 
-# Użyj obiektu Trainer do trenowania modelu
 trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=dataset
 )
 
-# Trening
 trainer.train()
 
-# Zapisanie dostrojonego modelu
 model.save_pretrained("./fine_tuned_model")
 tokenizer.save_pretrained("./fine_tuned_model")

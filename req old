@@ -1,0 +1,15 @@
+torch~=2.4.1
+transformers~=4.44.2
+datasets~=3.0.0
+sympy~=1.13.2
+requests~=2.32.3
+google-api-python-client~=2.146.0
+beautifulsoup4~=4.12.3
+
+
+transformers==4.21.0
+datasets==2.4.0
+sympy==1.10.1
+google-api-python-client==2.36.0
+beautifulsoup4==4.10.0
+requests==2.26.0

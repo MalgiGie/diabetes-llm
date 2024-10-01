@@ -34,10 +34,12 @@ def split_text(text, chunk_size=512):
     for i in range(0, len(words), chunk_size):
         yield " ".join(words[i:i + chunk_size])
 
-def get_data(query):
-    with open('CUSTOM_SEARCH_API_KEY.txt', 'r', encoding='utf-8') as plik:
+def get_data(query: str = ''):
+    if query == '':
+        return None
+    with open('api_keys/CUSTOM_SEARCH_API_KEY.txt', 'r', encoding='utf-8') as plik:
         API_KEY =  plik.read()
-    with open('CSE_ID.txt', 'r', encoding='utf-8') as plik:
+    with open('api_keys/CSE_ID.txt', 'r', encoding='utf-8') as plik:
         CSE_ID =  plik.read()
 
     links = google_search(query, API_KEY, CSE_ID)
@@ -59,9 +61,9 @@ def get_data(query):
 
 
 if __name__ == "__main__":
-    with open('CUSTOM_SEARCH_API_KEY.txt', 'r', encoding='utf-8') as plik:
+    with open('api_keys/CUSTOM_SEARCH_API_KEY.txt', 'r', encoding='utf-8') as plik:
         API_KEY =  plik.read()
-    with open('CSE_ID.txt', 'r', encoding='utf-8') as plik:
+    with open('api_keys/CSE_ID.txt', 'r', encoding='utf-8') as plik:
         CSE_ID =  plik.read()
     query = "Diabetes diet"
 
