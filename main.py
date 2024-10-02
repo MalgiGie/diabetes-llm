@@ -5,6 +5,7 @@ from scrapper import get_data
 import os
 import shutil
 import torch
+import gc
 
 def choose_model():
     folders = [f for f in os.listdir("models") if os.path.isdir(os.path.join("models", f))]
@@ -72,10 +73,21 @@ def train_model(name, data):
 
     trainer.train()
 
-    if os.path.isdir(f"models/{name}"):
-        shutil.rmtree(f"models/{name}")
-    model.save_pretrained(f"models/{name}")
-    tokenizer.save_pretrained(f"models/{name}")
+
+    model.save_pretrained(f"models/{name}_tmp")
+    tokenizer.save_pretrained(f"models/{name}_tmp")
+
+    results_path = "results"
+    if os.path.isdir(results_path):
+        for filename in os.listdir(results_path):
+            file_path = os.path.join(results_path, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print(f'Nie udało się usunąć {file_path}. Powód: {e}')
 
 def chatbot(name):
     print(f"\n{name}:")
@@ -114,6 +126,8 @@ def main():
                 prompt = input("Enter prompt: ")
                 if os.path.isdir(f"models/{name}"):
                     train_model(name, get_data(prompt))
+                    shutil.rmtree(f"models/{name}")
+                    os.rename(f"models/{name}_tmp", f"models/{name}")
                 else:
                     print(f"{name} does not exist")
 
